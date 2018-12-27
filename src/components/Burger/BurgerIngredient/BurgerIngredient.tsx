@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as classes from './BurgerIngredient.css';
+import * as classes from './BurgerIngredient.module.css';
 
 export interface IBurgerIngredientProps {
   type: string;

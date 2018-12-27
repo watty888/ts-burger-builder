@@ -1,9 +1,11 @@
 import * as React from 'react';
-import * as classes from './Backdrop.css';
+import * as classes from './Backdrop.module.css';
 
-export const Backdrop = (props: {
+type IBackDropProps = {
   show: boolean;
-  clicked: ((event: React.MouseEvent<HTMLDivElement>) => void) | undefined;
-}) => (
+  clicked: any;
+};
+
+export const Backdrop = (props: IBackDropProps) => (
   props.show ? <div className={classes.Backdrop} onClick={props.clicked} /> : null
 );

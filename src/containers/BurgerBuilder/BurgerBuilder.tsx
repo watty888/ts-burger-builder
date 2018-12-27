@@ -1,6 +1,6 @@
 import * as React from 'react';
+import { Burger } from '../../components/Burger';
 import { BuildControls } from '../../components/Burger/BuildControls/BuildControls';
-import { Burger } from '../../components/Burger/Burger';
 import { OrderSummary } from '../../components/Burger/OrderSummary';
 import { Modal } from '../../components/UI/Modal/Modal';
 import { Aux } from '../../hoc';
@@ -101,11 +101,9 @@ export class BurgerBuilder extends React.Component<IBurgerBuilderProps, IBurgerB
   }
 
   public render(): JSX.Element {
-    const disabledInfo: IngredientTypes = { ...this.state.ingredients };
+    const disabledInfo = { ...this.state.ingredients };
     for (const key in disabledInfo) {
-      if (disabledInfo[key] <= 0) {
-        disabledInfo[key] = true;
-      }
+      disabledInfo[key] = disabledInfo[key] <= 0;
     }
 
     return (

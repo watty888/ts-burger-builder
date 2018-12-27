@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as classes from './NavigationItem.css';
+import * as classes from './NavigationItem.module.css';
 
 export const NavigationItem = (props: {
   link: string | undefined;

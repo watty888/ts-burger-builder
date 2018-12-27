@@ -1,16 +1,14 @@
 import * as React from 'react';
-import * as classes from './Button.css';
+import * as classes from './Button.module.css';
 
+// export interface IButtonProps {
+//   btnType: string;
+//   clicked: ((event: React.MouseEvent<HTMLButtonElement>) => void) | undefined;
+// }
 
-export interface IButtonProps {
-  btnType: string;
-  clicked: ((event: React.MouseEvent<HTMLButtonElement>) => void) | undefined;
-  children: React.ReactNode;
-}
-
-export const Button = (props: IButtonProps) => (
+export const Button = (props: any) => (
   <button
-    className={[classes.Button, classes[props.btnType]].join(' ')}
+    className={[classes.Button, classes[props.btnType]].join(' ')} // fix cast to any
     onClick={props.clicked}
   >{props.children}
   </button>

@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { IngredientTypes } from '../../../containers/BurgerBuilder/BurgerBuilder';
 import { BuildControl } from './BuildControl/BuildControl';
-import * as classes from './BuildControls.css';
+import * as classes from './BuildControls.module.css';
 
 type ControlsType = {
   label: string;

@@ -1,11 +1,11 @@
 import * as React from 'react';
-import * as classes from './BuildControl.css';
+import * as classes from './BuildControl.module.css';
 
 interface BuildControlProps {
   label: string;
   removed: (event: React.MouseEvent<HTMLButtonElement>) => void;
   added: (event: React.MouseEvent<HTMLButtonElement>) => void;
-  disabled: boolean | undefined;
+  disabled: boolean;
 }
 
 export const BuildControl = (props: BuildControlProps) => {
