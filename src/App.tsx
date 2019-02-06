@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Layout } from './components/Layout';
 import { BurgerBuilder } from './containers/BurgerBuilder';
+import { Layout } from './hoc/Layout/Layout';
 
 
 export class App extends React.Component {
@@ -16,4 +16,3 @@ export class App extends React.Component {
 }
 
 export default App;
-

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { mainAxios } from '../../axios-orders';
 import { Burger } from '../../components/Burger';
 import { BuildControls } from '../../components/Burger/BuildControls/BuildControls';
 import { OrderSummary } from '../../components/Burger/OrderSummary';
@@ -6,14 +7,14 @@ import { Modal } from '../../components/UI/Modal/Modal';
 import { Aux } from '../../hoc';
 
 export interface IngredientTypes {
-  bacon: number;
-  cheese: number;
-  meat: number;
-  salad: number;
+  bacon: number | null;
+  cheese: number | null;
+  meat: number | null;
+  salad: number | null;
   [index: string]: any;
 }
 
-export interface IBurgerBuilderProps {}
+export interface IBurgerBuilderProps { }
 
 export interface IBurgerBuilderState {
   ingredients: IngredientTypes;
@@ -21,6 +22,7 @@ export interface IBurgerBuilderState {
   purchasing: boolean;
   totalPrice: number;
   [index: string]: any;
+  loading: boolean;
 }
 
 const INGREDIENT_PRICES: IngredientTypes = {
@@ -30,21 +32,57 @@ const INGREDIENT_PRICES: IngredientTypes = {
   salad: 0.5,
 };
 
+type AddressType = {
+  street: string;
+  zipcode: string;
+  country: string;
+}
+type CustomerType = {
+  name: string;
+  adrdess: AddressType;
+};
+export interface OrderType {
+  ingredients: IngredientTypes;
+  price: number;
+  customer: CustomerType;
+  deliverryMethod: string;
+}
+
 export class BurgerBuilder extends React.Component<IBurgerBuilderProps, IBurgerBuilderState> {
   public state = {
     ingredients: {
-      bacon: 0,
-      cheese: 0,
-      meat: 0,
-      salad: 0,
+      bacon: null,
+      cheese: null,
+      meat: null,
+      salad: null,
     } as IngredientTypes,
     purchasable: false,
     purchasing: false,
     totalPrice: 4,
+    loading: false,
   };
 
+  componentDidMount() {
+    mainAxios.get('https://react-my-burger-js.firebaseio.com/ingredients.json')
+      .then((response) => {
+        this.setState({ ingedients: response.data });
+      });
+  }
+
   private purchaceContinueHandler = () => {
-    alert('You Continue!');
+    this.setState({ loading: true });
+    const order: OrderType = {
+      ingredients: this.state.ingredients,
+      price: this.state.totalPrice,
+      customer: {
+        name: 'Elcin Bunyatov',
+        address: {
+          street: 'Test street 1',
+          zipCode: '1050',
+          country: 'Austria',
+        } as unknown as AddressType,
+      } as unknown as CustomerType,
+    };
   }
 
   private purchaseCancelHandler = () => {
@@ -91,7 +129,7 @@ export class BurgerBuilder extends React.Component<IBurgerBuilderProps, IBurgerB
 
       updatedIngredients[type] = updatedCount;
 
-      const priceAddition  = INGREDIENT_PRICES[type];
+      const priceAddition = INGREDIENT_PRICES[type];
       const oldPrice = this.state.totalPrice;
       const newPrice = oldPrice - priceAddition;
 
@@ -108,22 +146,22 @@ export class BurgerBuilder extends React.Component<IBurgerBuilderProps, IBurgerB
 
     return (
       <Aux>
-        <Modal show={this.state.purchasing} modalClosed={this.purchaseCancelHandler}>
+        <Modal show={ this.state.purchasing } modalClosed={ this.purchaseCancelHandler }>
           <OrderSummary
-            ingredients={this.state.ingredients}
-            purchaseCandelled={this.purchaseCancelHandler}
-            purchaseContinued={this.purchaceContinueHandler}
-            price={this.state.totalPrice}
+            ingredients={ this.state.ingredients }
+            purchaseCandelled={ this.purchaseCancelHandler }
+            purchaseContinued={ this.purchaceContinueHandler }
+            price={ this.state.totalPrice }
           />
         </Modal>
-        <Burger ingredients={this.state.ingredients}/>
+        <Burger ingredients={ this.state.ingredients } />
         <BuildControls
-          ingredientAdded={this.addIngredientHandler}
-          ingredientRemoved={this.removeIngredientHandler}
-          price={this.state.totalPrice}
-          disabled={disabledInfo}
-          purchasable={this.state.purchasable}
-          ordered={this.purchaseHandler}
+          ingredientAdded={ this.addIngredientHandler }
+          ingredientRemoved={ this.removeIngredientHandler }
+          price={ this.state.totalPrice }
+          disabled={ disabledInfo }
+          purchasable={ this.state.purchasable }
+          ordered={ this.purchaseHandler }
         />
       </Aux>
     );

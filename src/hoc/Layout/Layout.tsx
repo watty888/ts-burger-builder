@@ -1,7 +1,7 @@
 import * as React from 'react';
+import { Toolbar } from '../../components/Navigation/Toolbar';
+import { SideDrawer } from '../../components/Navigation/Toolbar/SideDrawer';
 import { Aux } from '../../hoc/Aux';
-import { Toolbar } from '../Navigation/Toolbar';
-import { SideDrawer } from '../Navigation/Toolbar/SideDrawer';
 import * as classes from './Layout.module.css';
 
 export interface ILayoutProps {
