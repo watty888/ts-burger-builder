@@ -32,20 +32,20 @@ const INGREDIENT_PRICES: IngredientTypes = {
   salad: 0.5,
 };
 
-type AddressType = {
-  street: string;
-  zipcode: string;
-  country: string;
-}
-type CustomerType = {
-  name: string;
-  adrdess: AddressType;
-};
+
 export interface OrderType {
   ingredients: IngredientTypes;
   price: number;
-  customer: CustomerType;
-  deliverryMethod: string;
+  customer: {
+    name: string,
+    address: {
+      street: string,
+      zipCode: string,
+      country: string,
+    },
+    email: string,
+  };
+  deliveryMethod: string;
 }
 
 export class BurgerBuilder extends React.Component<IBurgerBuilderProps, IBurgerBuilderState> {
@@ -71,18 +71,23 @@ export class BurgerBuilder extends React.Component<IBurgerBuilderProps, IBurgerB
 
   private purchaceContinueHandler = () => {
     this.setState({ loading: true });
+
     const order: OrderType = {
       ingredients: this.state.ingredients,
       price: this.state.totalPrice,
       customer: {
         name: 'Elcin Bunyatov',
         address: {
-          street: 'Test street 1',
+          street: 'Teststreet 1',
           zipCode: '1050',
           country: 'Austria',
-        } as unknown as AddressType,
-      } as unknown as CustomerType,
+        },
+        email: 'test@test.com',
+      },
+      deliveryMethod: 'fastest',
     };
+
+    mainAxios.post('/orders.json')
   }
 
   private purchaseCancelHandler = () => {
