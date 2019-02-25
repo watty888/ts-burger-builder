@@ -5,7 +5,7 @@ import { Button } from '../../UI/Button';
 export const OrderSummary = (props: {
   ingredients: { [x: string]: React.ReactNode; };
   price: { toFixed: (arg0: number) => React.ReactNode; };
-  purchaseCandelled: () => void;
+  purchaseCancelled: () => void;
   purchaseContinued: () => void;
 }) => {
   const ingredientsSummary = Object.keys(props.ingredients)
@@ -25,7 +25,7 @@ export const OrderSummary = (props: {
         <ul>{ingredientsSummary}</ul>
         <p><strong>Total Price: ${props.price.toFixed(2)}</strong></p>
         <p>Proceed to checkout?</p>
-        <Button btnType="Danger" clicked={props.purchaseCandelled}>CANCEL</Button>
+        <Button btnType="Danger" clicked={props.purchaseCancelled}>CANCEL</Button>
         <Button btnType="Success" clicked={props.purchaseContinued}>PROCEED</Button>
       </Aux>
     </div>

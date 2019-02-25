@@ -4,7 +4,7 @@ import { Backdrop } from '../Backdrop';
 import * as classes from './Modal.module.css';
 
 export interface IModalProps {
-  show: boolean;
+  show: boolean | any;
   modalClosed: () => void;
 }
 
