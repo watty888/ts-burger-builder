@@ -1,3 +1,5 @@
+
+import { AxiosResponse } from 'axios';
 import * as React from 'react';
 import { mainAxios } from '../../axios-orders';
 import { Burger } from '../../components/Burger';
@@ -67,11 +69,11 @@ export class BurgerBuilder extends React.Component<IBurgerBuilderProps, IBurgerB
 
   componentDidMount() {
     mainAxios.get('https://react-my-burger-js.firebaseio.com/ingredients.json')
-      .then((response: any) => {
+      .then((response: AxiosResponse) => {
         this.setState({ ingedients: response.data });
       })
       .catch(error => {
-        this.setState({error: true})
+        this.setState({ error: true });
       });
   }
 
@@ -115,22 +117,22 @@ export class BurgerBuilder extends React.Component<IBurgerBuilderProps, IBurgerB
       .map((igKey) => {
         return ingredients[igKey];
       })
-      .reduce((sum, el) => {
+      .reduce((sum: number, el: number) => {
         return sum + el;
       },      0);
-    this.setState({ purchasable: sum > 0 });
+    this.setState({ purchasable: sum as number > 0 });
   }
 
   private addIngredientHandler = (type: string) => {
-    const oldCount = this.state.ingredients[type];
+    const oldCount: number = this.state.ingredients[type] as number;
     const updatedCount = oldCount + 1;
     const updatedIngredients = { ...this.state.ingredients };
 
     updatedIngredients[type] = updatedCount;
 
-    const priceAddition = INGREDIENT_PRICES[type];
-    const oldPrice = this.state.totalPrice;
-    const newPrice = oldPrice + priceAddition;
+    const priceAddition: number = INGREDIENT_PRICES[type] as number;
+    const oldPrice: number = this.state.totalPrice;
+    const newPrice: number = oldPrice + priceAddition;
 
     this.setState({ totalPrice: newPrice, ingredients: updatedIngredients });
     this.updatePurchaseState(updatedIngredients);
@@ -140,14 +142,13 @@ export class BurgerBuilder extends React.Component<IBurgerBuilderProps, IBurgerB
     if (this.state.ingredients[type] === 0) {
       return;
     } else {
-      const oldCount = this.state.ingredients[type];
-      console.log(oldCount);
-      const updatedCount = oldCount - 1;
+      const oldCount: number = this.state.ingredients[type] as number;
+      const updatedCount: number = oldCount - 1;
       const updatedIngredients = { ...this.state.ingredients };
 
       updatedIngredients[type] = updatedCount;
 
-      const priceAddition = INGREDIENT_PRICES[type];
+      const priceAddition: number = INGREDIENT_PRICES[type] as number;
       const oldPrice = this.state.totalPrice;
       const newPrice = oldPrice - priceAddition;
 
@@ -157,34 +158,35 @@ export class BurgerBuilder extends React.Component<IBurgerBuilderProps, IBurgerB
   }
 
   public render(): JSX.Element {
-    const disabledInfo = { ...this.state.ingredients };
+    const disabledInfo: IngredientTypes = { ...this.state.ingredients };
 
     for (const key in disabledInfo) {
-      disabledInfo[key] = disabledInfo[key] <= 0;
+      disabledInfo[key] = (disabledInfo[key] as number) <= 0;
     }
 
     let orderSummary: JSX.Element | null = null;
-    let burger: JSX.Element | null = this.state.error ? <p>Ingredients can't be loaded</p> : <Spinner />;
+    let burger: JSX.Element | null = this.state.error ?
+      <p>Ingredients can't be loaded</p> : <Spinner />;
 
     if (this.state.ingredients) {
       burger = (
         <Aux>
-          <Burger ingredients={ this.state.ingredients } />
+          <Burger ingredients={this.state.ingredients} />
           <BuildControls
-            ingredientAdded={ this.addIngredientHandler }
-            ingredientRemoved={ this.removeIngredientHandler }
-            disabled={ disabledInfo }
-            purchasable={ this.state.purchasable }
-            ordered={ this.purchaseHandler }
-            price={ this.state.totalPrice } />
+            ingredientAdded={this.addIngredientHandler}
+            ingredientRemoved={this.removeIngredientHandler}
+            disabled={disabledInfo}
+            purchasable={this.state.purchasable}
+            ordered={this.purchaseHandler}
+            price={this.state.totalPrice} />
         </Aux>
       );
 
       orderSummary = <OrderSummary
-        ingredients={ this.state.ingredients }
-        price={ this.state.totalPrice }
-        purchaseCancelled={ this.purchaseCancelHandler }
-        purchaseContinued={ this.purchaseContinueHandler } />;
+        ingredients={this.state.ingredients}
+        price={this.state.totalPrice}
+        purchaseCancelled={this.purchaseCancelHandler}
+        purchaseContinued={this.purchaseContinueHandler} />;
     }
 
     if (this.state.loading) {
@@ -193,10 +195,10 @@ export class BurgerBuilder extends React.Component<IBurgerBuilderProps, IBurgerB
 
     return (
       <Aux>
-        <Modal show={ this.state.purchasing } modalClosed={ this.purchaseCancelHandler }>
-          { orderSummary }
+        <Modal show={this.state.purchasing} modalClosed={this.purchaseCancelHandler}>
+          {orderSummary}
         </Modal>
-        { burger }
+        {burger}
       </Aux>
     );
   }

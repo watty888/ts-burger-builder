@@ -1,3 +1,4 @@
+// tslint:disable: no-unsafe-any
 import * as React from 'react';
 import * as classes from './NavigationItem.module.css';
 
