@@ -42,7 +42,7 @@ export const BuildControls = (props: BuildControlsProps): JSX.Element => {
       className={classes.OrderButton}
       disabled={!props.purchasable}
       onClick={props.ordered}
-    >ORDER NOW</button>
+    >ORDER NOOOOW</button>
     </div>
   );
 };
